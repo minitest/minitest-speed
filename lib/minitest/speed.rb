@@ -46,13 +46,15 @@ module Minitest::Speed
     @teardown_t0 = Time.now
 
     delta = Time.now - @test_t0
-    assert_operator delta, :<=, @@max_teardown_time
+
+    assert_operator delta, :<=, @@max_test_time
   end
 
   def after_teardown # :nodoc:
     delta = Time.now - @teardown_t0
 
     assert_operator delta, :<=, @@max_teardown_time
+
     super
   end
 end
