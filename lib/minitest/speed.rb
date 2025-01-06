@@ -7,7 +7,7 @@ module Minitest; end # :nodoc:
 # maximum thresholds and crank it down over time.
 
 module Minitest::Speed
-  VERSION = "1.0.1" # :nodoc:
+  VERSION = "1.0.2" # :nodoc:
 
   ##
   # Maximum setup time to pass a speed test. Default to 1.0 second.
