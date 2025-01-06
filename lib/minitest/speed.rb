@@ -27,13 +27,13 @@ module Minitest::Speed
   def before_setup # :nodoc:
     super
 
-    @setup_t0 = Time.now
+    @setup_t0 = Minitest.clock_time
   end
 
   def after_setup # :nodoc:
-    delta = Time.now - @setup_t0
+    delta = Minitest.clock_time - @setup_t0
 
-    @test_t0 = Time.now
+    @test_t0 = Minitest.clock_time
 
     assert_operator delta, :<=, @@max_setup_time
 
@@ -43,15 +43,15 @@ module Minitest::Speed
   def before_teardown # :nodoc:
     super
 
-    @teardown_t0 = Time.now
+    @teardown_t0 = Minitest.clock_time
 
-    delta = Time.now - @test_t0
+    delta = Minitest.clock_time - @test_t0
 
     assert_operator delta, :<=, @@max_test_time
   end
 
   def after_teardown # :nodoc:
-    delta = Time.now - @teardown_t0
+    delta = Minitest.clock_time - @teardown_t0
 
     assert_operator delta, :<=, @@max_teardown_time
 
