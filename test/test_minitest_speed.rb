@@ -6,9 +6,9 @@ module TestMinitest; end
 class SpeedTest < Minitest::Test
   include Minitest::Speed
 
-  @@max_setup_time    = 0.05
-  @@max_test_time     = 0.15
-  @@max_teardown_time = 0.25
+  @@max_setup_time    = 0.005
+  @@max_test_time     = 0.015
+  @@max_teardown_time = 0.025
 
   def self.go(&b)
     Class.new(SpeedTest, &b).new(:test_something).run
@@ -27,7 +27,7 @@ class TestMinitest::TestSpeed < Minitest::Test
   def test_fast_setup
     assert_fast do
       def setup
-        sleep 0.01
+        sleep 0.001
       end
 
       def test_something
@@ -39,7 +39,7 @@ class TestMinitest::TestSpeed < Minitest::Test
   def test_slow_setup
     assert_slow do
       def setup
-        sleep 0.1
+        sleep 0.01
       end
 
       def test_something
@@ -51,7 +51,7 @@ class TestMinitest::TestSpeed < Minitest::Test
   def test_fast_test
     assert_fast do
       def test_something
-        sleep 0.1
+        sleep 0.01
       end
     end
   end
@@ -59,7 +59,7 @@ class TestMinitest::TestSpeed < Minitest::Test
   def test_slow_test
     assert_slow do
       def test_something
-        sleep 0.2
+        sleep 0.02
       end
     end
   end
@@ -67,7 +67,7 @@ class TestMinitest::TestSpeed < Minitest::Test
   def test_fast_teardown
     assert_fast do
       def teardown
-        sleep 0.2
+        sleep 0.01
       end
 
       def test_something
@@ -79,7 +79,7 @@ class TestMinitest::TestSpeed < Minitest::Test
   def test_slow_teardown
     assert_slow do
       def teardown
-        sleep 0.3
+        sleep 0.03
       end
 
       def test_something
