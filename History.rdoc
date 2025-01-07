@@ -2,6 +2,10 @@
 
 NINE YEARS!
 
+* 1 minor enhancement:
+
+  * Use Minitest.clock_time instead of Time.now for higher resolution when available.
+
 * 1 bug fix:
 
   * Fixed bug in max test time assertion.
