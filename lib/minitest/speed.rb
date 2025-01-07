@@ -35,7 +35,7 @@ module Minitest::Speed
 
     @test_t0 = Minitest.clock_time
 
-    assert_operator delta, :<=, @@max_setup_time
+    assert_operator delta, :<=, @@max_setup_time, "max_setup_time exceeded"
 
     super
   end
@@ -47,13 +47,13 @@ module Minitest::Speed
 
     delta = Minitest.clock_time - @test_t0
 
-    assert_operator delta, :<=, @@max_test_time
+    assert_operator delta, :<=, @@max_test_time, "max_test_time exceeded"
   end
 
   def after_teardown # :nodoc:
     delta = Minitest.clock_time - @teardown_t0
 
-    assert_operator delta, :<=, @@max_teardown_time
+    assert_operator delta, :<=, @@max_teardown_time, "max_teardown_time exceeded"
 
     super
   end
