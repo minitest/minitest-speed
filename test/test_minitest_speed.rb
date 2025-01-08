@@ -87,4 +87,20 @@ class TestMinitest::TestSpeed < Minitest::Test
       end
     end
   end
+
+  def test_clock_time_method
+    clock_time_method_was = Minitest::Speed.clock_time_method
+    assert_fast do
+      Minitest::Speed.clock_time_method = proc { 0 }
+      def setup
+        sleep(0.03)
+      end
+
+      def test_something
+        assert true
+      end
+    end
+  ensure
+    Minitest::Speed.clock_time_method = clock_time_method_was
+  end
 end
