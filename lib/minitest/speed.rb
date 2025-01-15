@@ -49,7 +49,8 @@ module Minitest::Speed
 
     @test_t0 = Minitest::Speed.clock_time_method.call
 
-    assert_operator delta, :<=, @@max_setup_time, "max_setup_time exceeded"
+    assert_operator delta, :<=, @@max_setup_time, "max_setup_time exceeded" unless @permit_slow_setup
+    @permit_slow_setup = false
 
     super
   end
@@ -61,14 +62,37 @@ module Minitest::Speed
 
     delta = Minitest::Speed.clock_time_method.call - @test_t0
 
-    assert_operator delta, :<=, @@max_test_time, "max_test_time exceeded"
+    assert_operator delta, :<=, @@max_test_time, "max_test_time exceeded" unless @permit_slow_test
+    @permit_slow_test = false
   end
 
   def after_teardown # :nodoc:
     delta = Minitest::Speed.clock_time_method.call - @teardown_t0
 
-    assert_operator delta, :<=, @@max_teardown_time, "max_teardown_time exceeded"
+    assert_operator delta, :<=, @@max_teardown_time, "max_teardown_time exceeded" unless @permit_slow_teardown
+    @permit_slow_teardown = false
 
     super
+  end
+
+  ##
+  # Disable setup speed assertion for the current setup.
+
+  def permit_slow_setup
+    @permit_slow_setup = true
+  end
+
+  ##
+  # Disable test speed assertion for the current test.
+
+  def permit_slow_test
+    @permit_slow_test = true
+  end
+
+  ##
+  # Disable teardown speed assertion for the current teardown.
+
+  def permit_slow_teardown
+    @permit_slow_teardown = true
   end
 end
