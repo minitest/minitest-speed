@@ -24,16 +24,30 @@ module Minitest::Speed
 
   @@max_teardown_time = 1.0
 
+  ##
+  # Default way of getting the current time.
+  # Minitest::Speed.clock_time = proc { Minitest.clock_time }
+
+  mc = class << self; self; end
+
+  ##
+  # Default way of getting the current time.
+
+  mc.attr_accessor :clock_time
+
+  self.clock_time = -> { Minitest.clock_time }
+
+
   def before_setup # :nodoc:
     super
 
-    @setup_t0 = Minitest.clock_time
+    @setup_t0 = Minitest::Speed.clock_time.call
   end
 
   def after_setup # :nodoc:
-    delta = Minitest.clock_time - @setup_t0
+    delta = Minitest::Speed.clock_time.call - @setup_t0
 
-    @test_t0 = Minitest.clock_time
+    @test_t0 = Minitest::Speed.clock_time.call
 
     assert_operator delta, :<=, @@max_setup_time, "max_setup_time exceeded"
 
@@ -43,15 +57,15 @@ module Minitest::Speed
   def before_teardown # :nodoc:
     super
 
-    @teardown_t0 = Minitest.clock_time
+    @teardown_t0 = Minitest::Speed.clock_time.call
 
-    delta = Minitest.clock_time - @test_t0
+    delta = Minitest::Speed.clock_time.call - @test_t0
 
     assert_operator delta, :<=, @@max_test_time, "max_test_time exceeded"
   end
 
   def after_teardown # :nodoc:
-    delta = Minitest.clock_time - @teardown_t0
+    delta = Minitest::Speed.clock_time.call - @teardown_t0
 
     assert_operator delta, :<=, @@max_teardown_time, "max_teardown_time exceeded"
 
