@@ -24,14 +24,12 @@ module Minitest::Speed
 
   @@max_teardown_time = 1.0
 
+  mc = class << self; self; end # :nodoc:
+
   ##
   # Default way of getting the current time.
+  #
   # Minitest::Speed.clock_time = proc { Minitest.clock_time }
-
-  mc = class << self; self; end
-
-  ##
-  # Default way of getting the current time.
 
   mc.attr_accessor :clock_time
 
